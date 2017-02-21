@@ -23,7 +23,8 @@ GLOG_ROOT=${ANDROID_LIB_ROOT}/glog
 OPENCV_ROOT=${ANDROID_LIB_ROOT}/opencv/sdk/native/jni
 PROTOBUF_ROOT=${ANDROID_LIB_ROOT}/protobuf
 export LMDB_DIR=${ANDROID_LIB_ROOT}/lmdb
-export OpenBLAS_HOME="${ANDROID_LIB_ROOT}/openblas"
+export OpenBLAS_HOME="${ANDROID_LIB_ROOT}/openblas" #有问题，官方用eigen替代
+export VIENNACL_HOME="${ANDROID_LIB_ROOT}/ViennaCL-1.7.0"
 
 rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"
@@ -36,9 +37,14 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DANDROID_NATIVE_API_LEVEL=21 \
       -DANDROID_USE_OPENMP=ON \
       -DADDITIONAL_FIND_PATH="${ANDROID_LIB_ROOT}" \
+      -DBUILD_matlab=OFF \
       -DBUILD_python=OFF \
       -DBUILD_docs=OFF \
-      -DCPU_ONLY=ON \
+      -DCPU_ONLY=OFF \
+      -DUSE_CUDA=OFF \
+      -DUSE_GREENTEA=ON \
+      -DOPENCL_INCLUDE_DIRS="${ANDROID_LIB_ROOT}/opencl-android/include/1.x" \
+      -DOPENCL_LIBRARIES="${ANDROID_LIB_ROOT}/opencl-android/lib/libOpenCL.so" \
       -DUSE_LMDB=ON \
       -DUSE_LEVELDB=OFF \
       -DUSE_HDF5=OFF \
